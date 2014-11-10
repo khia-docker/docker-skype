@@ -1,0 +1,28 @@
+#!/bin/bash
+if [ "$#" -ne 1 ]; then
+  echo "Usage $0 <profile directory>"
+  exit 1
+fi
+PULSE_DIR=$1/.pulse/
+mkdir -p ${PULSE_DIR}
+echo "disable-shm=yes" > ${PULSE_DIR}/client.conf
+PULSE_PATH=${PULSE_DIR}/.socket
+if [ ! -e "$PULSE_PATH" ] || [ -z "$(lsof -n $PULSE_PATH 2>&1)" ]; then
+  pactl load-module module-native-protocol-unix auth-anonymous=1 socket=${PULSE_PATH}
+fi
+if [ -z ${VIDEO_DEV} ]; then
+  for device in /dev/video*
+  do
+    VIDEO_ARGS="--device=${device} -v ${device}:${device} ${VIDEO_ARGS}"
+  done
+else
+  VIDEO_ARGS="--device=${VIDEO_DEV}"
+fi
+
+docker run -t -i -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v $1:/data/.Skype \
+  -v ${PULSE_DIR}/:/data/.pulse \
+  ${VIDEO_ARGS} \
+  -e DISPLAY=unix$DISPLAY \
+  -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libv4l/v4l1compat.so \
+  khia-docker/docker-skype
