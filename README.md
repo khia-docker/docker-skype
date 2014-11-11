@@ -9,8 +9,7 @@ Installation
 ------------
 
     docker pull diet/docker-skype
-    docker run -t -i diet/docker-skype cat /app/host/skype.run > ~/bin/skype.run
-	chmod +x ~/bin/skype.run
+    docker run diet/docker-skype cat /app/host/skype.run > ~/bin/skype.run && chmod +x ~/bin/skype.run
 
 Basic usage
 -----------
