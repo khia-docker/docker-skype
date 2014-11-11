@@ -20,14 +20,18 @@ RUN \
 RUN apt-get install -y wget
 RUN wget http://download.skype.com/linux/skype-debian_4.3.0.37-1_i386.deb -O /usr/src/skype.deb
 RUN dpkg -i /usr/src/skype.deb || true
+RUN apt-get update
 RUN apt-get install -fy # Automatically detect and install dependencies
 
 # Enable camera
-RUN apt-get install -y libv4l-0
+RUN apt-get install -y libv4l-0:i386
 
 ENV QT_X11_NO_MITSHM 1
 ENV GNOME_DESKTOP_SESSION_ID this-is-deprecated
 ENV PULSE_SERVER /data/.pulse/.socket
 
+ADD bin/skype.run /app/host/skype.run
+ADD bin/skype /app/skype
+
 USER skype
-CMD "/usr/bin/skype"
+CMD "/app/skype"
