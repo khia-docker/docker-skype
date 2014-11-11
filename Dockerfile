@@ -10,10 +10,11 @@ RUN apt-get update && apt-get install -y sudo
 # Install PulseAudio for i386 (64bit version does not work with Skype)
 RUN apt-get install -y libpulse0:i386 pulseaudio:i386
 
-# create sysadmin account
-RUN useradd -m -d /data -p saIVpsc0EVTwA sysadmin
-RUN sed -Ei 's/sudo:x:27:/sudo:x:27:sysadmin/' /etc/group
-RUN sed -Ei 's/(\%sudo\s+ALL=\(ALL\:ALL\) )ALL/\1 NOPASSWD:ALL/' /etc/sudoers
+# create skype user
+RUN \
+  adduser --disabled-password --gecos '' skype \
+  && adduser skype sudo \
+  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Install Skype
 RUN apt-get install -y wget
@@ -28,4 +29,5 @@ ENV QT_X11_NO_MITSHM 1
 ENV GNOME_DESKTOP_SESSION_ID this-is-deprecated
 ENV PULSE_SERVER /data/.pulse/.socket
 
-CMD ["/usr/bin/sudo", "-u", "sysadmin", "-H", "-E", "/usr/bin/skype"]
+USER skype
+CMD "/usr/bin/skype"
