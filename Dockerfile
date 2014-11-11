@@ -1,4 +1,4 @@
-# Base docker image
+# Base docker image based on work of Daniel Mizyrycki <daniel@docker.com>
 FROM debian:wheezy
 
 # Setup multiarch because Skype is 32bit only

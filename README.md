@@ -14,3 +14,11 @@ Tips
 ----
 
 You might want to create wrapper scripts in `~/bin` something like `skype.work` and `skype.personal`
+
+Acknowledgements
+----------------
+
+This work is based and inspired by
+
+  - Dockerfile of Daniel Mizyrycki <daniel@docker.com>
+  - Running Google chrome in a container post from https://www.stgraber.org/category/planet-canonical/
