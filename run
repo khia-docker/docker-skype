@@ -16,7 +16,7 @@ if [ -z ${VIDEO_DEV} ]; then
     VIDEO_ARGS="--device=${device} -v ${device}:${device} ${VIDEO_ARGS}"
   done
 else
-  VIDEO_ARGS="--device=${VIDEO_DEV}"
+  VIDEO_ARGS="--device=${VIDEO_DEV} -v ${VIDEO_DEV}:${VIDEO_DEV}"
 fi
 
 docker run -t -i -v /tmp/.X11-unix:/tmp/.X11-unix \
